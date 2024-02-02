@@ -4,6 +4,11 @@ This file documents all notable changes to the GEOS-Chem repository starting in 
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased] - TBD
+### Changed
+- Activate the `DryDep` collection for GCClassic & GCHP fullchem benchmarks
+- Reduce the GCHP `DryDep` collection to only the necessary species for benchmarks
+
 ## [Unreleased 14.3.0] - TBD
 ### Added
 - Added capability for TOMAS simulations in GCHP
