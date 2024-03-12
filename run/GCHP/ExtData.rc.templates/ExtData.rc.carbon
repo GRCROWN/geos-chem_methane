@@ -312,27 +312,16 @@ CH4_SOILABSORB kg/m2/s  2009 Y F%y4-%m2-01T00:00:00 none none  CH4uptake  ./HcoD
 # %%%%% CO emissions %%%%%
 #==============================================================================
 
-# --- CEDSv2 anthro + ship emissions              ---
-# --- These are off by default in HEMCO_COnfig.rc ---
-#CEDS_CO_AGR  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_agr  ./HcoDir/CEDS/v2021-06/%y4/CO-em-anthro_CMIP_CEDS_%y4.nc
-#CEDS_CO_ENE  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_ene  ./HcoDir/CEDS/v2021-06/%y4/CO-em-anthro_CMIP_CEDS_%y4.nc
-#CEDS_CO_IND  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_ind  ./HcoDir/CEDS/v2021-06/%y4/CO-em-anthro_CMIP_CEDS_%y4.nc
-#CEDS_CO_TRA  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_tra  ./HcoDir/CEDS/v2021-06/%y4/CO-em-anthro_CMIP_CEDS_%y4.nc
-#CEDS_CO_RCO  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_rco  ./HcoDir/CEDS/v2021-06/%y4/CO-em-anthro_CMIP_CEDS_%y4.nc
-#CEDS_CO_SLV  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_slv  ./HcoDir/CEDS/v2021-06/%y4/CO-em-anthro_CMIP_CEDS_%y4.nc
-#CEDS_CO_WST  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_wst  ./HcoDir/CEDS/v2021-06/%y4/CO-em-anthro_CMIP_CEDS_%y4.nc
-#CEDS_CO_SHP  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_shp  ./HcoDir/CEDS/v2021-06/%y4/CO-em-anthro_CMIP_CEDS_%y4.nc
-
 # --- CEDS_01x01 anthro + ship emissions ---
 # --- This is the default inventory      ---
-CEDS01_CO_AGR  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_agr  ./HcoDir/CEDS/v2023-04/%y4/CEDS_CO_0.1x0.1_%y4.nc
-CEDS01_CO_ENE  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_ene  ./HcoDir/CEDS/v2023-04/%y4/CEDS_CO_0.1x0.1_%y4.nc
-CEDS01_CO_IND  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_ind  ./HcoDir/CEDS/v2023-04/%y4/CEDS_CO_0.1x0.1_%y4.nc
-CEDS01_CO_TRA  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_tra  ./HcoDir/CEDS/v2023-04/%y4/CEDS_CO_0.1x0.1_%y4.nc
-CEDS01_CO_RCO  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_rco  ./HcoDir/CEDS/v2023-04/%y4/CEDS_CO_0.1x0.1_%y4.nc
-CEDS01_CO_SLV  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_slv  ./HcoDir/CEDS/v2023-04/%y4/CEDS_CO_0.1x0.1_%y4.nc
-CEDS01_CO_WST  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_wst  ./HcoDir/CEDS/v2023-04/%y4/CEDS_CO_0.1x0.1_%y4.nc
-CEDS01_CO_SHP  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_shp            ./HcoDir/CEDS/v2023-04/%y4/CEDS_CO_0.1x0.1_%y4.nc
+CEDS_CO_AGR  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_agr  ./HcoDir/CEDS/v2023-04/%y4/CEDS_CO_0.1x0.1_%y4.nc
+CEDS_CO_ENE  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_ene  ./HcoDir/CEDS/v2023-04/%y4/CEDS_CO_0.1x0.1_%y4.nc
+CEDS_CO_IND  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_ind  ./HcoDir/CEDS/v2023-04/%y4/CEDS_CO_0.1x0.1_%y4.nc
+CEDS_CO_TRA  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_tra  ./HcoDir/CEDS/v2023-04/%y4/CEDS_CO_0.1x0.1_%y4.nc
+CEDS_CO_RCO  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_rco  ./HcoDir/CEDS/v2023-04/%y4/CEDS_CO_0.1x0.1_%y4.nc
+CEDS_CO_SLV  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_slv  ./HcoDir/CEDS/v2023-04/%y4/CEDS_CO_0.1x0.1_%y4.nc
+CEDS_CO_WST  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_wst  ./HcoDir/CEDS/v2023-04/%y4/CEDS_CO_0.1x0.1_%y4.nc
+CEDS_CO_SHP  kg/m2/s N Y F%y4-%m2-01T00:00:00 none none CO_shp            ./HcoDir/CEDS/v2023-04/%y4/CEDS_CO_0.1x0.1_%y4.nc
 
 # --- APEI Canada (APEI) ---
 #APEI_CO kg/m2/s N Y F%y4-01-01T00:00:00 none none CO  ./HcoDir/APEI/v2016-11/APEI.0.1x0.1.nc
