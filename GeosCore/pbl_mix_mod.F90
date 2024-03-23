@@ -342,7 +342,7 @@ CONTAINS
             diagTrop    = NULL(),                                            &
             mapDataTrop = NULL(),                                            &
             isPBL       = .TRUE.,                                            &
-            diagPBL     = State_Diag%BudgetMixingPBLHeight,                  &
+            diagPBL     = State_Diag%BudgetMixingPBL,                        &
             mapDataPBL  = State_Diag%Map_BudgetMixingPBL,                    &
             colMass     = State_Diag%BudgetColumnMass,                       &
             before_op   = .TRUE.,                                            &
@@ -553,7 +553,7 @@ CONTAINS
             diagTrop    = NULL(),                                            &
             mapDataTrop = NULL(),                                            &
             isPBL       = .TRUE.,                                            &
-            diagPBL     = State_Diag%BudgetMixingPBLHeight,                  &
+            diagPBL     = State_Diag%BudgetMixingPBL,                        &
             mapDataPBL  = State_Diag%Map_BudgetMixingPBL,                    &
             colMass     = State_Diag%BudgetColumnMass,                       &
             timeStep    = DT_Dyn,                                            &
