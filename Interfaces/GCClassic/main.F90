@@ -194,7 +194,7 @@ PROGRAM GEOS_Chem
   !-----------------------------
 
   ! Logicals
-  LOGICAL                  :: TimeForEmis
+  LOGICAL                  :: TimeForEmis, isChemTime
   LOGICAL                  :: notDryRun
   LOGICAL                  :: VerboseAndRoot
 
@@ -877,6 +877,9 @@ PROGRAM GEOS_Chem
           CALL Debug_Msg( '### MAIN: a SET_CURRENT_TIME' )
        ENDIF
 
+       ! Is it time for chemistry?
+       isChemTime = ITS_TIME_FOR_CHEM()
+
        !---------------------------------------------------------------------
        ! %%%%% HISTORY (netCDF diagnostics) %%%%%
        !
@@ -888,7 +891,8 @@ PROGRAM GEOS_Chem
              CALL Timer_Start( "Diagnostics", RC )
           ENDIF
 
-          CALL Zero_Diagnostics_StartOfTimestep( Input_Opt, State_Diag, RC )
+          CALL Zero_Diagnostics_StartOfTimestep( Input_Opt, isChemTime, &
+                                                 State_Diag, RC )
           IF ( RC /= GC_SUCCESS ) THEN
              ErrMsg = 'Error encountered in "Zero_Diagnostics_StartOfTimestep!"'
              CALL Error_Stop( ErrMsg, ThisLoc )
@@ -1551,7 +1555,7 @@ PROGRAM GEOS_Chem
           ENDIF
 
           ! Every chemistry timestep...
-          IF ( ITS_TIME_FOR_CHEM() ) THEN
+          IF ( isChemTime ) THEN
 
 #ifdef BPCH_DIAG
              ! Increment chemistry timestep counter
@@ -1616,7 +1620,7 @@ PROGRAM GEOS_Chem
        !=====================================================================
        !         ***** U P D A T E   O P T I C A L   D E P T H *****
        !=====================================================================
-       IF ( ITS_TIME_FOR_CHEM() .and. notDryRun ) THEN
+       IF ( isChemTime .and. notDryRun ) THEN
 
           IF ( Input_Opt%useTimers ) THEN
              CALL Timer_Start( "All chemistry",       RC )

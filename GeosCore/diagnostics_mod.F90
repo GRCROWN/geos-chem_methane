@@ -303,7 +303,7 @@ CONTAINS
 !\\
 ! !INTERFACE:
 !
-  SUBROUTINE Zero_Diagnostics_StartofTimestep( Input_Opt, State_Diag, RC )
+  SUBROUTINE Zero_Diagnostics_StartofTimestep( Input_Opt, isChemTime, State_Diag, RC )
 !
 ! !USES:
 !
@@ -313,6 +313,7 @@ CONTAINS
 ! !INPUT PARAMETERS:
 !
     TYPE(OptInput),   INTENT(IN)    :: Input_Opt    ! Input Options object
+    LOGICAL,          INTENT(IN)    :: isChemTime   ! This a chemistry timestep?
 !
 ! !INPUT AND OUTPUT PARAMETERS:
 !
