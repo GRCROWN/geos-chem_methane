@@ -2290,6 +2290,7 @@ CONTAINS
             mapDataLevs = State_Diag%Map_BudgetMixingLevs,                   &
             colMass     = State_Diag%BudgetColumnMass,                       &
             before_op   = .TRUE.,                                            &
+            msg         = 'Compute budget diag (1)'//TRIM(ThisLoc),          &
             RC          = RC                                                )
 
        ! Trap potential errors
@@ -2417,6 +2418,7 @@ CONTAINS
             mapDataLevs = State_Diag%Map_BudgetMixingLevs,                   &
             colMass     = State_Diag%BudgetColumnMass,                       &
             timeStep    = DT_Dyn,                                            &
+            msg         = 'Compute budget diag (2)'//TRIM(ThisLoc),          &
             RC          = RC                                                )
 
        ! Trap potential errors
