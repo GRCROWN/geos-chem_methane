@@ -343,7 +343,7 @@ CONTAINS
          IF ( Input_Opt%amIRoot )                                                       &
             write(*,*) "KPP Standalone Interface warning: Specified output directory ", &
                        trim(v_str), " does not exist, writing to default output path" 
-         KPP_Standalone_YAML%Output_Directory = "./"
+         KPP_Standalone_YAML%Output_Directory = "./OutputDir"
       ELSE 
          KPP_Standalone_YAML%Output_Directory = trim(v_str)
          ! Delete the file that tested the directory existence
