@@ -37,7 +37,7 @@ MODULE gckpp_Global
   REAL(kind=dp) :: FIX(NFIX)
 ! VAR, FIX are chunks of array C
 !      EQUIVALENCE( C(1),VAR(1) )
-!      EQUIVALENCE( C(267),FIX(1) )
+!      EQUIVALENCE( C(341),FIX(1) )
 ! RCONST - Rate constants (global)
   REAL(kind=dp) :: RCONST(NREACT)
 ! TIME - Current integration time
@@ -216,6 +216,10 @@ MODULE gckpp_Global
   ! Aerosol specific volume, cm3(aerosol)/cm3(air)
   REAL(kind=dp) :: XVOL(25)
   !$OMP THREADPRIVATE( XVOL )
+
+  ! OH/H emission rate from UV devices, molec/cm3/s, HRQ 2024-06-16
+  REAL(kind=dp) :: UV_OH_RATE, UV_H_RATE
+  !$OMP THREADPRIVATE( UV_OH_RATE, UV_H_RATE )
 
 
 ! INLINED global variable declarations

@@ -75,6 +75,10 @@ MODULE FlexChem_Mod
   REAL(f4), ALLOCATABLE :: JvSumDay  (:,:,:,:)
   REAL(f4), ALLOCATABLE :: JvSumMon  (:,:,:,:)
 
+  ! OH/H emission rate from UV devices, kg/m2/s, HRQ 2024-06-16
+  REAL(fp), ALLOCATABLE :: UV_OH_EMIS(:,:,:  )
+  REAL(fp), ALLOCATABLE :: UV_H_EMIS (:,:,:  )
+
 CONTAINS
 !EOC
 !------------------------------------------------------------------------------
@@ -95,6 +99,7 @@ CONTAINS
 !
 ! !USES:
 !
+    USE HCO_Utilities_GC_Mod, ONLY : HCO_GC_EvalFld ! HRQ 2024-06-16
     USE AEROSOL_MOD,          ONLY : SOILDUST, AEROSOL_CONC, RDAER
     USE CMN_FJX_MOD
     USE DUST_MOD,             ONLY : RDUST_ONLINE
@@ -271,6 +276,34 @@ CONTAINS
           State_Diag%JNoonFrac = 0.0_f4
        ENDWHERE
     ENDIF
+
+    ! Set UV_OH_EMIS and UV_H_EMIS Values, HRQ 2024-06-16
+    UV_OH_EMIS(:,:,:) = 0.0_fp
+    UV_H_EMIS (:,:,:) = 0.0_fp
+    IF ( prtDebug ) CALL DEBUG_MSG( '### HRQ: READING UV_H/OH_EMIS' )
+    CALL HCO_GC_EvalFld( Input_Opt, State_Grid, 'UV_OH', UV_OH_EMIS, RC )
+    IF ( RC /= GC_SUCCESS ) THEN
+       ErrMsg = 'UV_OH not found in HEMCO data list!'
+       CALL GC_Error( ErrMsg, RC, ThisLoc )
+       RETURN
+    ENDIF
+    CALL HCO_GC_EvalFld( Input_Opt, State_Grid, 'UV_H', UV_H_EMIS, RC )
+    IF ( RC /= GC_SUCCESS ) THEN
+       ErrMsg = 'UV_H not found in HEMCO data list!'
+       CALL GC_Error( ErrMsg, RC, ThisLoc )
+       RETURN
+    ENDIF
+    IF ( prtDebug ) THEN
+       WRITE( 6, 200 ) 'Max', 'UV_OH_EMIS', MAXVAL( UV_OH_EMIS )
+       WRITE( 6, 200 ) 'Min', 'UV_OH_EMIS', MINVAL( UV_OH_EMIS )
+       WRITE( 6, 200 ) 'Sum', 'UV_OH_EMIS', SUM   ( UV_OH_EMIS )
+       WRITE( 6, 200 ) 'Min', 'UV_OH_EMIS', MINVAL( UV_OH_EMIS )
+       WRITE( 6, 200 ) 'Max', 'UV_H_EMIS ', MAXVAL( UV_H_EMIS  )
+       WRITE( 6, 200 ) 'Min', 'UV_H_EMIS ', MINVAL( UV_H_EMIS  )
+       WRITE( 6, 200 ) 'Sum', 'UV_H_EMIS ', SUM   ( UV_H_EMIS  )
+200    FORMAT( '     HRQ: ', A, '. ', A, ' =', ES11.4, ' kg/m2/s' )
+    ENDIF
+    ! Init UV_OH_EMIS and UV_H_EMIS ends, HRQ 2024-06-16
 
     IF ( Input_Opt%useTimers ) THEN
        CALL Timer_End  ( "=> FlexChem",     RC ) ! started in Do_Chemistry
@@ -1277,7 +1310,7 @@ CONTAINS
     USE GcKpp_Global
     USE GcKpp_Parameters
     USE Input_Opt_Mod,   ONLY : OptInput
-    USE PhysConstants,   ONLY : CONSVAP
+    USE PhysConstants,   ONLY : CONSVAP, AVO ! HRQ, 2024-06-16
     USE Pressure_Mod,    ONLY : Get_Pcenter
     USE State_Chm_Mod,   ONLY : ChmState
     USE State_Grid_Mod,  ONLY : GrdState
@@ -1390,6 +1423,12 @@ CONTAINS
     CONSEXP  = 17.2693882_f8 * ( TEMP - 273.16_f8 ) / ( TEMP - 35.86_f8 )
     VPRESH2O = CONSVAP * EXP( CONSEXP ) / TEMP
     RELHUM   = ( H2O / VPRESH2O ) * 100_f8
+
+    ! Convert UV_OH_EMIS/UV_H_EMIS [kg/m2/s] to UV_OH_RATE/UV_H_RATE
+    ! [molec/cm3/s], HRQ 2024-06-16
+    UV_OH_RATE = UV_OH_EMIS(I,J,L) / State_Met%BXHEIGHT(I,J,L) / 1000 / 17.01 * AVO
+    UV_H_RATE  = UV_H_EMIS(I,J,L)  / State_Met%BXHEIGHT(I,J,L) / 1000 / 1.01  * AVO
+    ! Convert UV_OH_EMIS/UV_H_EMIS ends
 
   END SUBROUTINE Set_Kpp_GridBox_Values
 !EOC
@@ -1945,7 +1984,9 @@ CONTAINS
 !\\
 ! !INTERFACE:
 !
-  SUBROUTINE Init_FlexChem( Input_Opt, State_Chm, State_Diag, RC )
+! Parameter list is modified in order to pass NX, NY, NZ,  and
+! then UV_OH_EMIS/UV_H_EMIS will be allocated, HRQ 2024-06-16
+  SUBROUTINE Init_FlexChem( Input_Opt, State_Chm, State_Diag, State_Grid, RC )
 !
 ! !USES:
 !
@@ -1956,12 +1997,15 @@ CONTAINS
     USE State_Chm_Mod,    ONLY : ChmState
     USE State_Chm_Mod,    ONLY : Ind_
     USE State_Diag_Mod,   ONLY : DgnState
+    USE ERROR_MOD                         ! HRQ 2024-06-16
+    USE State_Grid_Mod,   ONLY : GrdState ! HRQ 2024-06-16
 !
 ! !INPUT PARAMETERS:
 !
     TYPE(OptInput), INTENT(IN)  :: Input_Opt   ! Input Options object
     TYPE(ChmState), INTENT(IN)  :: State_Chm   ! Diagnostics State object
     TYPE(DgnState), INTENT(IN)  :: State_Diag  ! Diagnostics State object
+    TYPE(GrdState), INTENT(IN)  :: State_Grid  ! Grid State object, HRQ 2024-06-16
 !
 ! !OUTPUT PARAMETERS:
 !
@@ -2124,6 +2168,18 @@ CONTAINS
 
     ENDIF
 
+    ! Allocate UV_OH_EMIS/UV_H_EMIS, HRQ 2024-06-16
+    ALLOCATE( UV_OH_EMIS(State_Grid%NX,State_Grid%NY,State_Grid%NZ), &
+    STAT=RC)
+    CALL GC_CheckVar( 'flexchem_mod.F90:UV_OH_EMIS', 0, RC )
+    IF ( RC /= GC_SUCCESS ) RETURN
+    ALLOCATE( UV_H_EMIS (State_Grid%NX,State_Grid%NY,State_Grid%NZ), &
+    STAT=RC)
+    CALL GC_CheckVar( 'flexchem_mod.F90:UV_H_EMIS',  0, RC )
+    IF ( RC /= GC_SUCCESS ) RETURN
+    IF ( prtDebug ) CALL DEBUG_MSG( '### HRQ: UV_H/OH_EMIS ALLOCATED' )
+    ! Allocate UV_OH_EMIS/UV_H_EMIS ends, HRQ 2024-06-16
+
     !--------------------------------------------------------------------
     ! If we are archiving the P(CO) from CH4 and from NMVOC from a fullchem
     ! simulation for the tagCO simulation, throw an error if we cannot find
@@ -2215,6 +2271,19 @@ CONTAINS
        CALL GC_CheckVar( 'flexchem_mod.F90:JvCountMon', 2, RC )
        IF ( RC /= GC_SUCCESS ) RETURN
     ENDIF
+
+    ! Deallocate UV_OH_EMIS/UV_H_EMIS, HRQ 2024-06-16
+    IF ( ALLOCATED( UV_OH_EMIS ) ) THEN
+       DEALLOCATE( UV_OH_EMIS, STAT=RC  )
+       CALL GC_CheckVar( 'flexchem_mod.F90:UV_OH_EMIS', 2, RC )
+       IF ( RC /= GC_SUCCESS ) RETURN
+    ENDIF
+    IF ( ALLOCATED( UV_H_EMIS ) ) THEN
+       DEALLOCATE( UV_H_EMIS, STAT=RC  )
+       CALL GC_CheckVar( 'flexchem_mod.F90:UV_H_EMIS', 2, RC )
+       IF ( RC /= GC_SUCCESS ) RETURN
+    ENDIF
+    ! Deallocate UV_OH_EMIS/UV_H_EMIS ends, HRQ 2024-06-16
 
   END SUBROUTINE Cleanup_FlexChem
 !EOC

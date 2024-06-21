@@ -1255,23 +1255,24 @@ PROGRAM GEOS_Chem
           ENDIF
        ENDIF
 
-       ! Prescribe methane surface concentrations throughout PBL
-       IF ( ITS_A_FULLCHEM_SIM .and. id_CH4 > 0 .and. notDryRun ) THEN
-
-          IF ( prtDebug ) THEN
-             CALL DEBUG_MSG( '### MAIN: Setting PBL CH4 conc')
-          ENDIF
-
-          ! Set CH4 concentrations
-          CALL SET_CH4( Input_Opt, State_Chm, State_Diag, State_Grid, &
-                        State_Met, RC )
-
-          ! Trap potential errors
-          IF ( RC /= GC_SUCCESS ) THEN
-             ErrMsg = 'Error encountered in call to "SET_CH4"!'
-             CALL Error_Stop( ErrMsg, ThisLoc )
-          ENDIF
-       ENDIF
+       ! Commented out by HRQ 2024-06-16
+       !  ! Prescribe methane surface concentrations throughout PBL
+       !  IF ( ITS_A_FULLCHEM_SIM .and. id_CH4 > 0 .and. notDryRun ) THEN
+ 
+       !     IF ( prtDebug ) THEN
+       !        CALL DEBUG_MSG( '### MAIN: Setting PBL CH4 conc')
+       !     ENDIF
+ 
+       !     ! Set CH4 concentrations
+       !     CALL SET_CH4( Input_Opt, State_Chm, State_Diag, State_Grid, &
+       !                   State_Met, RC )
+ 
+       !     ! Trap potential errors
+       !     IF ( RC /= GC_SUCCESS ) THEN
+       !        ErrMsg = 'Error encountered in call to "SET_CH4"!'
+       !        CALL Error_Stop( ErrMsg, ThisLoc )
+       !     ENDIF
+       !  ENDIF
 
        !=====================================================================
        !                  ***** T R A N S P O R T *****

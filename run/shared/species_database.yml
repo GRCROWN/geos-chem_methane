@@ -1033,11 +1033,104 @@ GLYX:
   Is_WetDep: true
   MW_g: 58.04
   WD_RetFactor: 2.0e-2
-H:
+H_PROP: &Hproperties
   Formula: H
-  FullName: Atomic hydrogen
+  Background_VV: 0.0
   Is_Gas: true
   MW_g: 1.01
+H:
+  << : *Hproperties
+  FullName: Atomic hydrogen
+HP01:
+  << : *Hproperties
+  FullName: H Prod;  O1D + H2 = H + OH
+HP02:
+  << : *Hproperties
+  FullName: H Prod;  O1D + CH4 = CH2O + H + HO2
+HP03:
+  << : *Hproperties
+  FullName: H Prod;  OH + H2 = H2O + H
+HP04:
+  << : *Hproperties
+  FullName: H Prod;  O + OH = O2 + H
+HP05:
+  << : *Hproperties
+  FullName: H Prod;  O1D + HCl = 0.090O + 0.090HCl + 0.240H + 0.670Cl + 0.240ClO + 0.670OH
+HP06:
+  << : *Hproperties
+  FullName: H Prod;  O1D + HBr = 0.200O + 0.200HBr + 0.150BrO + 0.650OH + 0.150H + 0.650Br
+HP07:
+  << : *Hproperties
+  FullName: H Prod;  Cl + H2 = H + HCl
+HP08:
+  << : *Hproperties
+  FullName: H Prod;  CH2O + hv = HO2 + H + CO
+HP09:
+  << : *Hproperties
+  FullName: H Prod;  UV = H
+HL01:
+  << : *Hproperties
+  FullName: H Loss;  H + O2 +M = HO2 +M
+HL02:
+  << : *Hproperties
+  FullName: H Loss;  H + O3 = OH + O2
+HL03:
+  << : *Hproperties
+  FullName: H Loss;  H + HO2 = 2.000OH
+HL04:
+  << : *Hproperties
+  FullName: H Loss;  H + HO2 = O + H2O
+HL05:
+  << : *Hproperties
+  FullName: H Loss;  H + HO2 = H2 + O2
+PH:
+  << : *Hproperties
+  FullName: Dummy species to track production rate of H
+PHP01:
+  << : *Hproperties
+  FullName: Dummy species to track production rate of HP01
+PHP02:
+  << : *Hproperties
+  FullName: Dummy species to track production rate of HP02
+PHP03:
+  << : *Hproperties
+  FullName: Dummy species to track production rate of HP03
+PHP04:
+  << : *Hproperties
+  FullName: Dummy species to track production rate of HP04
+PHP05:
+  << : *Hproperties
+  FullName: Dummy species to track production rate of HP05
+PHP06:
+  << : *Hproperties
+  FullName: Dummy species to track production rate of HP06
+PHP07:
+  << : *Hproperties
+  FullName: Dummy species to track production rate of HP07
+PHP08:
+  << : *Hproperties
+  FullName: Dummy species to track production rate of HP08
+PHP09:
+  << : *Hproperties
+  FullName: Dummy species to track production rate of HP09
+LH:
+  << : *Hproperties
+  FullName: Dummy species to track loss rate of H
+PHL01:
+  << : *Hproperties
+  FullName: Dummy species to track loss rate of HL01
+PHL02:
+  << : *Hproperties
+  FullName: Dummy species to track loss rate of HL02
+PHL03:
+  << : *Hproperties
+  FullName: Dummy species to track loss rate of HL03
+PHL04:
+  << : *Hproperties
+  FullName: Dummy species to track loss rate of HL04
+PHL05:
+  << : *Hproperties
+  FullName: Dummy species to track loss rate of HL05
 H1211:
   Formula: CBrClF2
   FullName: Halon 1211, Freon 12B1
@@ -3125,12 +3218,147 @@ OCS:
   Is_Gas: true
   Is_Photolysis: true
   MW_g: 60.07
-OH:
-  Background_VV: 4.0e-15
+OH_PROP: &OHproperties
   Formula: OH
-  FullName: Hydroxyl radical
+  Background_VV: 0.0
   Is_Gas: true
   MW_g: 17.01
+OH:
+  << : *OHproperties
+  Background_VV: 4.0e-15
+  FullName: Hydroxyl radical
+OHP01:
+  << : *OHproperties
+  FullName: OH Prod; O3 + HO2 = OH + O2 + O2
+OHP02:
+  << : *OHproperties
+  FullName: OH Prod; HO2 + NO = OH + NO2
+OHP03:
+  << : *OHproperties
+  FullName: OH Prod; O1D + H2O = 2.000OH
+OHP04:
+  << : *OHproperties
+  FullName: OH Prod; H + O3 = OH + O2
+OHP05:
+  << : *OHproperties
+  FullName: OH Prod; H2O2 + hv = OH + OH
+OHP06:
+  << : *OHproperties
+  FullName: OH Prod; MP + hv = CH2O + HO2 + OH
+OHP07:
+  << : *OHproperties
+  FullName: OH Prod; HOI + hv = I + OH
+OHP08:
+  << : *OHproperties
+  FullName: OH Prod; UV = OH
+OHL01:
+  << : *OHproperties
+  FullName: OH Loss; O3 + OH = HO2 + O2
+OHL02:
+  << : *OHproperties
+  FullName: OH Loss; OH + OH = H2O + O
+OHL03:
+  << : *OHproperties
+  FullName: OH Loss; OH + OH +M = H2O2 +M
+OHL04:
+  << : *OHproperties
+  FullName: OH Loss; OH + HO2 = H2O + O2
+OHL05:
+  << : *OHproperties
+  FullName: OH Loss; OH + H2O2 = H2O + HO2
+OHL06:
+  << : *OHproperties
+  FullName: OH Loss; OH + CO = HO2 + CO2
+OHL07:
+  << : *OHproperties
+  FullName: OH Loss; OH + CH4 = MO2 + H2O
+OHL08:
+  << : *OHproperties
+  FullName: OH Loss; MP + OH = MO2 + H2O
+OHL09:
+  << : *OHproperties
+  FullName: OH Loss; CH2O + OH = CO + HO2 + H2O
+OHL10:
+  << : *OHproperties
+  FullName: OH Loss; NO2 + OH +M = HNO3 +M
+OHL11:
+  << : *OHproperties
+  FullName: OH Loss; ALD2 + OH = 0.950MCO3 + 0.050CH2O +0.050CO + 0.050HO2 + H2O
+OHL12:
+  << : *OHproperties
+  FullName: OH Loss; ALK4 + OH = R4O2
+OHL13:
+  << : *OHproperties
+  FullName: OH Loss; OH + H2 = H2O + H
+POH:
+  << : *OHproperties
+  FullName: Dummy species to track production rate of OH
+POHP01:
+  << : *OHproperties
+  FullName: Dummy species to track production rate of OHP01
+POHP02:
+  << : *OHproperties
+  FullName: Dummy species to track production rate of OHP02
+POHP03:
+  << : *OHproperties
+  FullName: Dummy species to track production rate of OHP03
+POHP04:
+  << : *OHproperties
+  FullName: Dummy species to track production rate of OHP04
+POHP05:
+  << : *OHproperties
+  FullName: Dummy species to track production rate of OHP05
+POHP06:
+  << : *OHproperties
+  FullName: Dummy species to track production rate of OHP06
+POHP07:
+  << : *OHproperties
+  FullName: Dummy species to track production rate of OHP07
+POHP08:
+  << : *OHproperties
+  FullName: Dummy species to track production rate of OHP08
+LOH:
+  << : *OHproperties
+  FullName: Dummy species to track loss rate of OH
+POHL01:
+  << : *OHproperties
+  FullName: Dummy species to track loss rate of OHL01
+POHL02:
+  << : *OHproperties
+  FullName: Dummy species to track loss rate of OHL02
+POHL03:
+  << : *OHproperties
+  FullName: Dummy species to track loss rate of OHL03
+POHL04:
+  << : *OHproperties
+  FullName: Dummy species to track loss rate of OHL04
+POHL05:
+  << : *OHproperties
+  FullName: Dummy species to track loss rate of OHL05
+POHL06:
+  << : *OHproperties
+  FullName: Dummy species to track loss rate of OHL06
+POHL07:
+  << : *OHproperties
+  FullName: Dummy species to track loss rate of OHL07
+POHL08:
+  << : *OHproperties
+  FullName: Dummy species to track loss rate of OHL08
+POHL09:
+  << : *OHproperties
+  FullName: Dummy species to track loss rate of OHL09
+POHL10:
+  << : *OHproperties
+  FullName: Dummy species to track loss rate of OHL10
+POHL11:
+  << : *OHproperties
+  FullName: Dummy species to track loss rate of OHL11
+POHL12:
+  << : *OHproperties
+  FullName: Dummy species to track loss rate of OHL12
+POHL13:
+  << : *OHproperties
+  FullName: Dummy species to track loss rate of OHL13
 OIO:
   Formula: OIO
   FullName: Iodine dioxide

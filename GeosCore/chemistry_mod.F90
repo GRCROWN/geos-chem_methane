@@ -1311,7 +1311,8 @@ CONTAINS
        ! Initialize FlexChem (skip if it is a dry-run)
        !--------------------------------------------------------------------
        IF ( .not. Input_Opt%DryRun ) THEN
-          CALL Init_FlexChem( Input_Opt, State_Chm, State_Diag, RC )
+          ! Pass State_Grid to Init_FlexChem, HRQ 2024-06-16
+          CALL Init_FlexChem( Input_Opt, State_Chm, State_Diag, State_Grid, RC )
 
           ! Trap potential errors
           IF ( RC /= GC_SUCCESS ) THEN
